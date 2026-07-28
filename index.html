@@ -1,123 +1,84 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>ميزانيتي</title>
 
-<link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="style.css">
 
-<meta name="theme-color" content="#0F9D58">
-
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<header class="header">
-    <h1>💰 ميزانيتي</h1>
-    <p>إدارة أموالك بسهولة</p>
+<header>
+
+<h1>💰 ميزانيتي</h1>
+
+<p>إدارة أموالك بسهولة ✨</p>
+
 </header>
 
-<section class="balance">
+<div class="cards">
 
-<h2>الرصيد الحالي</h2>
-
-<div id="balance">
-0 ريال
+<div class="card balance">
+<h2>💼 الرصيد الحالي</h2>
+<h1 id="balance">0 ريال</h1>
 </div>
 
-</section>
-
-<section class="cards">
-
 <div class="card income">
-<h3>الدخل</h3>
-<p id="income">0</p>
+<h2>💵 الدخل</h2>
+<h1 id="income">0 ريال</h1>
 </div>
 
 <div class="card expense">
-<h3>المصروف</h3>
-<p id="expense">0</p>
+<h2>🛒 المصروفات</h2>
+<h1 id="expense">0 ريال</h1>
 </div>
 
 <div class="card invest">
-<h3>الاستثمارات</h3>
-<p id="investment">0</p>
+<h2>🌱 الاستثمارات</h2>
+<h1 id="invest">0 ريال</h1>
 </div>
 
-</section>
+</div>
 
-<section class="buttons">
+<div class="add-box">
 
-<button onclick="showForm()">
-
-➕ إضافة عملية
-
-</button>
-
-</section>
-
-<section id="form" class="hidden">
-
-<h2>عملية جديدة</h2>
-
-<input
-type="number"
-id="amount"
-placeholder="المبلغ">
+<h2>➕ إضافة عملية</h2>
 
 <select id="type">
 
-<option value="income">دخل</option>
+<option value="income">💵 دخل</option>
 
-<option value="expense">مصروف</option>
+<option value="expense">🛒 مصروف</option>
 
-<option value="investment">استثمار</option>
-
-</select>
-
-<select id="category">
-
-<option>الالتزامات</option>
-
-<option>الاستثمارات</option>
-
-<option>الشخصية</option>
+<option value="invest">🌱 استثمار</option>
 
 </select>
 
-<input
-type="text"
-id="note"
-placeholder="ملاحظة">
+<input type="number" id="amount" placeholder="💵 المبلغ">
+
+<input type="text" id="note" placeholder="📝 ملاحظة">
 
 <button onclick="saveTransaction()">
 
-حفظ
+💾 حفظ
 
 </button>
 
-</section>
+</div>
 
-<section class="history">
+<div class="history">
 
-<h2>
+<h2>🕒 آخر العمليات</h2>
 
-آخر العمليات
+<ul id="history"></ul>
 
-</h2>
+</div>
 
-<ul id="transactions">
-
-</ul>
-
-</section>
-
-<script src="app.js"></script>
+<script src="script.js"></script>
 
 </body>
-
 </html>
