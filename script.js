@@ -12,8 +12,9 @@ const type = document.getElementById("type").value;
 
 const amount = Number(document.getElementById("amount").value);
 
-const note = document.getElementById("note").value;
+const category=document.getElementById("category").value;
 
+const note=document.getElementById("note").value;
 if(amount<=0){
 
 alert("أدخل مبلغاً صحيحاً");
@@ -43,6 +44,8 @@ invest += amount;
 history.unshift({
 
 type,
+
+category,
 
 amount,
 
@@ -91,6 +94,10 @@ if(item.type==="invest") emoji="🌱";
 list.innerHTML+=`
 
 <li>
+
+<strong>${item.category}</strong>
+
+<br>
 
 ${emoji} ${item.amount} ريال
 
