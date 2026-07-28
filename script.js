@@ -105,6 +105,14 @@ ${emoji} ${item.amount} ريال
 
 <small>${item.note}</small>
 
+<br>
+
+<small style="color:gray">
+
+🗓️ ${item.date}
+
+</small>
+
 </li>
 
 `;
