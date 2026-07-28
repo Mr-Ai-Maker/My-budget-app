@@ -1,0 +1,63 @@
+function updateScreen(){
+
+document.getElementById("income").innerText=income+" ريال";
+
+document.getElementById("expense").innerText=expense+" ريال";
+
+document.getElementById("invest").innerText=invest+" ريال";
+
+document.getElementById("balance").innerText=(income-expense-invest)+" ريال";
+
+const list=document.getElementById("history");
+
+list.innerHTML="";
+
+history.forEach((item,index)=>{
+
+let emoji="💵";
+
+if(item.type==="expense") emoji="🛒";
+
+if(item.type==="invest") emoji="🌱";
+
+list.innerHTML+=`
+
+<li style="padding:15px;margin-bottom:12px;border-radius:15px;background:#f4f4f4;">
+
+<strong>${item.category}</strong>
+
+<br>
+
+${emoji} ${item.amount} ريال
+
+<br>
+
+<small>${item.note}</small>
+
+<br>
+
+<small style="color:gray;">🗓️ ${item.date}</small>
+
+<br><br>
+
+<button onclick="deleteTransaction(${index})"
+style="
+background:#e74c3c;
+color:white;
+border:none;
+padding:10px 16px;
+border-radius:10px;
+cursor:pointer;
+">
+
+🗑 حذف
+
+</button>
+
+</li>
+
+`;
+
+});
+
+}
