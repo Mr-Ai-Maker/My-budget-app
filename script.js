@@ -104,3 +104,98 @@ cursor:pointer;
 
 }
 
+// ===============================
+// حفظ عملية جديدة أو تعديل عملية
+// ===============================
+
+function saveTransaction() {
+
+    const type = document.getElementById("type").value;
+
+    const category = document.getElementById("category").value;
+
+    const amount = Number(document.getElementById("amount").value);
+
+    const note = document.getElementById("note").value;
+
+    if (amount <= 0) {
+        alert("أدخل مبلغًا صحيحًا");
+        return;
+    }
+
+    const today = new Date().toLocaleDateString("ar-SA");
+
+    // عند التعديل نحذف القديمة أولاً
+    if (editingIndex !== -1) {
+
+        const old = history[editingIndex];
+
+        if (old.type === "income") {
+            income -= old.amount;
+        } else if (old.type === "expense") {
+            expense -= old.amount;
+        } else {
+            invest -= old.amount;
+        }
+
+        history.splice(editingIndex, 1);
+
+        editingIndex = -1;
+    }
+
+    // إضافة المبلغ الجديد
+    if (type === "income") {
+        income += amount;
+    } else if (type === "expense") {
+        expense += amount;
+    } else {
+        invest += amount;
+    }
+
+    // حفظ العملية
+    history.unshift({
+        type: type,
+        category: category,
+        amount: amount,
+        note: note,
+        date: today
+    });
+
+    // تخزين البيانات
+    localStorage.setItem("income", income);
+    localStorage.setItem("expense", expense);
+    localStorage.setItem("invest", invest);
+    localStorage.setItem("history", JSON.stringify(history));
+
+    // تنظيف الحقول
+    document.getElementById("amount").value = "";
+    document.getElementById("note").value = "";
+
+    updateScreen();
+
+}
+
+// ===============================
+// تعديل عملية
+// ===============================
+
+function editTransaction(index) {
+
+    editingIndex = index;
+
+    const item = history[index];
+
+    document.getElementById("type").value = item.type;
+
+    document.getElementById("category").value = item.category;
+
+    document.getElementById("amount").value = item.amount;
+
+    document.getElementById("note").value = item.note;
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
