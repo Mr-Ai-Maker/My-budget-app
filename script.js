@@ -125,7 +125,9 @@ cursor:pointer;
 </li>
 `;
 
-    });
+});
+
+drawChart();
 
 }
 
@@ -298,12 +300,6 @@ function drawChart() {
 // ===============================
 // تشغيل التطبيق عند فتح الصفحة
 // ===============================
-
-window.onload = function () {
-
-    updateScreen();
-
-};
 
 window.onload = function () {
     updateScreen();
