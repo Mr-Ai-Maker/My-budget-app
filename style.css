@@ -120,3 +120,18 @@ margin-bottom:12px;
 border-radius:14px;
 font-size:20px;
 }
+
+.search-box{
+display:flex;
+gap:10px;
+margin-bottom:15px;
+}
+
+.search-box input,
+.search-box select{
+flex:1;
+padding:12px;
+font-size:16px;
+border-radius:10px;
+border:1px solid #ddd;
+}
