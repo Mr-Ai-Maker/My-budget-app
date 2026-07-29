@@ -41,11 +41,14 @@ item.type!==filter
 return;
 }
 
-if(
-!item.category.toLowerCase().includes(search) &&
-!item.note.toLowerCase().includes(search)
-){
-return;
+const category = (item.category || "").toLowerCase();
+const note = (item.note || "").toLowerCase();
+
+if (
+    !category.includes(search) &&
+    !note.includes(search)
+) {
+    return;
 }
 
         let emoji = "💵";
