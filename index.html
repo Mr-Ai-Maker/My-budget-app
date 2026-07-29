@@ -100,6 +100,29 @@
 
 <h2>🕒 آخر العمليات</h2>
 
+  <div class="search-box">
+
+<input
+id="search"
+type="text"
+placeholder="🔍 ابحث عن عملية..."
+oninput="updateScreen()"
+>
+
+<select id="filter" onchange="updateScreen()">
+
+<option value="all">📋 جميع العمليات</option>
+
+<option value="income">💵 الدخل</option>
+
+<option value="expense">🛒 المصروفات</option>
+
+<option value="invest">🌱 الاستثمارات</option>
+
+</select>
+
+  </div>
+  
 <ul id="history"></ul>
 
 </div>
