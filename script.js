@@ -199,3 +199,44 @@ function editTransaction(index) {
     });
 
 }
+
+// ===============================
+// حذف عملية
+// ===============================
+
+function deleteTransaction(index) {
+
+    if (!confirm("هل تريد حذف هذه العملية؟")) {
+        return;
+    }
+
+    const item = history[index];
+
+    if (item.type === "income") {
+        income -= item.amount;
+    } else if (item.type === "expense") {
+        expense -= item.amount;
+    } else {
+        invest -= item.amount;
+    }
+
+    history.splice(index, 1);
+
+    localStorage.setItem("income", income);
+    localStorage.setItem("expense", expense);
+    localStorage.setItem("invest", invest);
+    localStorage.setItem("history", JSON.stringify(history));
+
+    updateScreen();
+
+}
+
+// ===============================
+// تشغيل التطبيق عند فتح الصفحة
+// ===============================
+
+window.onload = function () {
+
+    updateScreen();
+
+};
