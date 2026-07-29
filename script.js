@@ -28,10 +28,12 @@ function updateScreen() {
 
     list.innerHTML = "";
 
-    const search = document.getElementById("search").value.toLowerCase();
+    const searchElement = document.getElementById("search");
+const filterElement = document.getElementById("filter");
 
-const filter = document.getElementById("filter").value;
-
+const search = searchElement ? searchElement.value.toLowerCase() : "";
+const filter = filterElement ? filterElement.value : "all";
+    
 history.forEach((item,index)=>{
 
 if(
