@@ -28,7 +28,25 @@ function updateScreen() {
 
     list.innerHTML = "";
 
-    history.forEach((item, index) => {
+    const search = document.getElementById("search").value.toLowerCase();
+
+const filter = document.getElementById("filter").value;
+
+history.forEach((item,index)=>{
+
+if(
+filter!=="all" &&
+item.type!==filter
+){
+return;
+}
+
+if(
+!item.category.toLowerCase().includes(search) &&
+!item.note.toLowerCase().includes(search)
+){
+return;
+}
 
         let emoji = "💵";
 
@@ -240,3 +258,24 @@ window.onload = function () {
     updateScreen();
 
 };
+
+.search-box{
+display:flex;
+gap:10px;
+margin-bottom:15px;
+}
+
+.search-box input,
+.search-box select{
+
+flex:1;
+
+padding:12px;
+
+font-size:16px;
+
+border-radius:10px;
+
+border:1px solid #ddd;
+
+}
