@@ -4,6 +4,8 @@ let invest = Number(localStorage.getItem("invest")) || 0;
 
 let history = JSON.parse(localStorage.getItem("history")) || [];
 
+let editingIndex = -1;
+
 function updateScreen(){
 
 document.getElementById("income").innerText = income + " ريال";
@@ -108,6 +110,26 @@ invest += amount;
 
 }
 
+  if(editingIndex!=-1){
+
+const old=history[editingIndex];
+
+if(old.type==="income"){
+income-=old.amount;
+}
+else if(old.type==="expense"){
+expense-=old.amount;
+}
+else{
+invest-=old.amount;
+}
+
+history.splice(editingIndex,1);
+
+editingIndex=-1;
+
+  }
+  
 history.unshift({
 
 type,
@@ -198,6 +220,37 @@ income-=item.amount;
 
 }
 
+  <br><br>
+
+<button onclick="editTransaction(${index})"
+style="
+background:#2196F3;
+color:white;
+border:none;
+padding:8px 15px;
+border-radius:8px;
+margin-left:8px;
+cursor:pointer;
+">
+
+✏️ تعديل
+
+</button>
+
+<button onclick="deleteTransaction(${index})"
+style="
+background:#e53935;
+color:white;
+border:none;
+padding:8px 15px;
+border-radius:8px;
+cursor:pointer;
+">
+
+🗑 حذف
+
+</button>
+
 else if(item.type==="expense"){
 
 expense-=item.amount;
@@ -220,3 +273,40 @@ localStorage.setItem("history",JSON.stringify(history));
 updateScreen();
 
 }
+
+<small style="color:gray;">
+🗓️ ${item.date}
+</small>
+
+<br><br>
+
+<button ...>
+✏️ تعديل
+</button>
+
+<button ...>
+🗑 حذف
+</button>
+
+</li>
+
+function editTransaction(index){
+
+editingIndex=index;
+
+const item=history[index];
+
+document.getElementById("type").value=item.type;
+
+document.getElementById("category").value=item.category;
+
+document.getElementById("amount").value=item.amount;
+
+document.getElementById("note").value=item.note;
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+} 
