@@ -261,24 +261,3 @@ window.onload = function () {
     updateScreen();
 
 };
-
-.search-box{
-display:flex;
-gap:10px;
-margin-bottom:15px;
-}
-
-.search-box input,
-.search-box select{
-
-flex:1;
-
-padding:12px;
-
-font-size:16px;
-
-border-radius:10px;
-
-border:1px solid #ddd;
-
-}
