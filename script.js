@@ -11,6 +11,8 @@ let history = JSON.parse(localStorage.getItem("history")) || [];
 
 let editingIndex = -1;
 
+let financeChart = null;
+
 // ===============================
 // تحديث الشاشة
 // ===============================
@@ -254,6 +256,45 @@ function deleteTransaction(index) {
 
 }
 
+function drawChart() {
+
+    const ctx = document.getElementById("financeChart");
+
+    if (!ctx) return;
+
+    if (financeChart) {
+        financeChart.destroy();
+    }
+
+    financeChart = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+            labels: [
+                "💰 الدخل",
+                "🛒 المصروفات",
+                "🌱 الاستثمارات"
+            ],
+            datasets: [{
+                data: [
+                    income,
+                    expense,
+                    invest
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: "bottom"
+                }
+            }
+        }
+    });
+
+}
+
+
 // ===============================
 // تشغيل التطبيق عند فتح الصفحة
 // ===============================
@@ -262,4 +303,19 @@ window.onload = function () {
 
     updateScreen();
 
+};
+
+window.onload = function () {
+    updateScreen();
+
+    const search = document.getElementById("search");
+    const filter = document.getElementById("filter");
+
+    if (search) {
+        search.addEventListener("input", updateScreen);
+    }
+
+    if (filter) {
+        filter.addEventListener("change", updateScreen);
+    }
 };
