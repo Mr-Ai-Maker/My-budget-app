@@ -13,6 +13,8 @@ let editingIndex = -1;
 
 let financeChart = null;
 
+let monthlyBudget = Number(localStorage.getItem("monthlyBudget")) || 0;
+
 // ===============================
 // تحديث الشاشة
 // ===============================
@@ -128,6 +130,8 @@ cursor:pointer;
 });
 
 drawChart();
+
+updateBudget();
 
 }
 
@@ -296,6 +300,58 @@ function drawChart() {
 
 }
 
+function saveBudget() {
+
+    const value = Number(document.getElementById("budgetInput").value);
+
+    if (value <= 0) {
+        alert("أدخل ميزانية صحيحة");
+        return;
+    }
+
+    monthlyBudget = value;
+
+    localStorage.setItem("monthlyBudget", monthlyBudget);
+
+    updateBudget();
+
+}
+
+function updateBudget() {
+
+    const remaining = monthlyBudget - expense;
+
+    const percent = monthlyBudget > 0
+        ? Math.min((expense / monthlyBudget) * 100, 100)
+        : 0;
+
+    document.getElementById("budgetRemaining").innerText =
+        "المتبقي: " + remaining + " ريال";
+
+    const bar = document.getElementById("budgetBar");
+
+    bar.style.width = percent + "%";
+
+    const status = document.getElementById("budgetStatus");
+
+    if (percent < 80) {
+
+        bar.style.background = "#4CAF50";
+        status.innerText = "🟢 ضمن الميزانية";
+
+    } else if (percent < 100) {
+
+        bar.style.background = "#FF9800";
+        status.innerText = "🟠 اقتربت من الحد";
+
+    } else {
+
+        bar.style.background = "#F44336";
+        status.innerText = "🔴 تجاوزت الميزانية";
+
+    }
+
+}
 
 // ===============================
 // تشغيل التطبيق عند فتح الصفحة
@@ -304,6 +360,8 @@ function drawChart() {
 window.onload = function () {
     updateScreen();
 
+    document.getElementById("budgetInput").value = monthlyBudget;
+    
     const search = document.getElementById("search");
     const filter = document.getElementById("filter");
 
