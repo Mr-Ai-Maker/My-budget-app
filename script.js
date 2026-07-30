@@ -131,6 +131,8 @@ cursor:pointer;
 
 drawChart();
 
+drawChart();
+
 updateBudget();
 
 }
@@ -350,6 +352,18 @@ function updateBudget() {
         status.innerText = "🔴 تجاوزت الميزانية";
 
     }
+
+}
+
+function updateSummary(){
+
+document.getElementById("incomeSummary").innerText=income;
+
+document.getElementById("expenseSummary").innerText=expense;
+
+document.getElementById("investSummary").innerText=invest;
+
+document.getElementById("remainSummary").innerText=income-expense-invest;
 
 }
 
