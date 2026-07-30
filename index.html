@@ -20,10 +20,38 @@
 <canvas id="financeChart" height="250"></canvas>
 
   </div>
-  
+
+    <div class="budget-box">
+
+    <h2>🎯 الميزانية الشهرية</h2>
+
+    <input
+        type="number"
+        id="budgetInput"
+        placeholder="💰 أدخل ميزانية الشهر">
+
+    <button onclick="saveBudget()">
+        💾 حفظ الميزانية
+    </button>
+
+    <h3 id="budgetRemaining">
+        المتبقي: 0 ريال
+    </h3>
+
+    <div class="progress">
+
+        <div id="budgetBar"></div>
+
+    </div>
+
+    <p id="budgetStatus">
+        🟢 ممتاز
+    </p>
+
+    </div>
+    
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-
 <header>
 
 <h1>ميزانيتي💰</h1>
