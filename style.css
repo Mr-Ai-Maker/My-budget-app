@@ -229,3 +229,37 @@ margin-top:15px;
 text-align:center;
 
 }
+
+.summary-box{
+
+margin-top:25px;
+
+padding:20px;
+
+background:white;
+
+border-radius:18px;
+
+box-shadow:0 3px 10px rgba(0,0,0,.12);
+
+}
+
+.summary-item{
+
+font-size:20px;
+
+padding:12px 0;
+
+border-bottom:1px solid #eee;
+
+}
+
+.summary-item:last-child{
+
+border-bottom:none;
+
+font-weight:bold;
+
+font-size:22px;
+
+}
