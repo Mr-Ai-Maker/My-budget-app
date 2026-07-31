@@ -924,3 +924,54 @@ font-size:20px;
 
 }
 
+/* =======================================
+   التنبيهات
+======================================= */
+
+.alert-box{
+
+padding:15px;
+
+margin:20px 0;
+
+border-radius:15px;
+
+font-weight:bold;
+
+text-align:center;
+
+display:none;
+
+animation:fade .3s;
+
+}
+
+.alert-warning{
+
+background:#FFF3CD;
+
+color:#856404;
+
+border:2px solid #FFE082;
+
+}
+
+.alert-danger{
+
+background:#F8D7DA;
+
+color:#721C24;
+
+border:2px solid #EF5350;
+
+}
+
+.alert-success{
+
+background:#D4EDDA;
+
+color:#155724;
+
+border:2px solid #81C784;
+
+}
