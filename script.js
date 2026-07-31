@@ -135,6 +135,8 @@ updateBudget();
 
 updateSummary();
 
+updateHome();
+
 }
 
 // ===============================
@@ -364,6 +366,18 @@ document.getElementById("expenseSummary").innerText=expense;
 document.getElementById("investSummary").innerText=invest;
 
 document.getElementById("remainSummary").innerText=income-expense-invest;
+
+}
+
+function updateHome(){
+
+document.getElementById("homeIncome").innerText=income+" ريال";
+
+document.getElementById("homeExpense").innerText=expense+" ريال";
+
+document.getElementById("homeInvest").innerText=invest+" ريال";
+
+document.getElementById("homeBalance").innerText=(income-expense-invest)+" ريال";
 
 }
 
