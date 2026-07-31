@@ -975,3 +975,25 @@ color:#155724;
 border:2px solid #81C784;
 
 }
+
+.report-card{
+
+background:white;
+
+padding:20px;
+
+border-radius:18px;
+
+margin-top:20px;
+
+box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+}
+
+.report-card p{
+
+margin:12px 0;
+
+font-size:17px;
+
+}
