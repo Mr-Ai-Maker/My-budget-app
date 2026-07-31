@@ -253,7 +253,59 @@ transition:.25s;
 
 .action-grid button:hover{
 
-transform:scale(1.03
+transform:scale(1.03)
+
+   background:#2196f3
+
+   color:white;
+
+}
+
+/* =======================================
+   آخر العمليات
+======================================= */
+
+.recent-box{
+
+margin-top:30px;
+
+background:white;
+
+padding:20px;
+
+border-radius:18px;
+
+box-shadow:0 5px 12px rgba(0,0,0,.08);
+
+}
+
+.recent-item{
+
+display:flex;
+
+justify-content:space-between;
+
+padding:12px 0;
+
+border-bottom:1px solid #eee;
+
+}
+
+.recent-item:last-child{
+
+border-bottom:none;
+
+}
+
+.empty{
+
+text-align:center;
+
+color:#999;
+
+padding:20px;
+
+}
 
        /* =======================================
    الملخص المالي
@@ -715,5 +767,160 @@ justify-content:space-around;
 
 align-items:center;
 
-box-shadow:0 -5
+box-shadow:0 -5px 15px rgba(0,0,0,.12);
+
+z-index:999;
+
+}
+
+.bottom-nav button{
+
+flex:1;
+
+height:100%;
+
+border:none;
+
+background:none;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:22px;
+
+cursor:pointer;
+
+transition:.3s;
+
+color:#666;
+
+}
+
+.bottom-nav button span{
+
+font-size:12px;
+
+margin-top:4px;
+
+}
+
+.bottom-nav button:hover{
+
+color:#2196F3;
+
+background:#F5F7FB;
+
+}
+
+/* =======================================
+   الوضع الليلي
+======================================= */
+
+body.dark{
+
+background:#121212;
+
+color:white;
+
+}
+
+body.dark .card,
+
+body.dark .summary-item,
+
+body.dark .chart-box,
+
+body.dark .budget-section,
+
+body.dark .recent-box,
+
+body.dark .transaction-item,
+
+body.dark .info-card,
+
+body.dark .settings-grid button{
+
+background:#1E1E1E;
+
+color:white;
+
+}
+
+body.dark input,
+
+body.dark select{
+
+background:#2A2A2A;
+
+color:white;
+
+border-color:#444;
+
+}
+
+body.dark .bottom-nav{
+
+background:#1E1E1E;
+
+}
+
+body.dark .bottom-nav button{
+
+color:#DDD;
+
+}
+
+body.dark .bottom-nav button:hover{
+
+background:#333;
+
+color:#64B5F6;
+
+}
+
+
+/* =======================================
+   تحسينات الهاتف
+======================================= */
+
+@media(max-width:600px){
+
+.cards{
+
+grid-template-columns:1fr;
+
+}
+
+.stats-info{
+
+grid-template-columns:1fr;
+
+}
+
+.transaction-item{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+.bottom-nav{
+
+height:75px;
+
+}
+
+.bottom-nav button{
+
+font-size:20px;
+
+}
+
+}
 
