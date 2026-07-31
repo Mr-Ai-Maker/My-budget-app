@@ -131,9 +131,9 @@ cursor:pointer;
 
 drawChart();
 
-drawChart();
-
 updateBudget();
+
+updateSummary();
 
 }
 
