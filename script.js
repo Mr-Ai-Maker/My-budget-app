@@ -415,7 +415,6 @@ recent.appendChild(div);
 document.getElementById("transactionCount").textContent=
 transactions.length;
 
-}
 
   // أعلى فئة صرف
 
@@ -452,6 +451,7 @@ topCategory = category;
 
 }
 
+}
 document.getElementById("topCategory").textContent =
 `${topCategory} (${maxAmount} ريال)`;
 
