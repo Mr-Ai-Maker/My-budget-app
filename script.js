@@ -416,7 +416,7 @@ document.getElementById("transactionCount").textContent=
 transactions.length;
 
 
-  // أعلى فئة صرف
+// أعلى فئة صرف
 
 const expenses = transactions.filter(
 item => item.type === "expense"
@@ -431,7 +431,7 @@ expenses.forEach(item=>{
 const name = item.description;
 
 categories[name] =
-(categories[name] || 0) + item.amount;
+(categories[name] || 0) + Number(item.amount);
 
 });
 
@@ -439,7 +439,7 @@ let topCategory = "";
 
 let maxAmount = 0;
 
-for(let category in categories){
+for(const category in categories){
 
 if(categories[category] > maxAmount){
 
@@ -451,7 +451,6 @@ topCategory = category;
 
 }
 
-}
 document.getElementById("topCategory").textContent =
 `${topCategory} (${maxAmount} ريال)`;
 
@@ -461,7 +460,7 @@ document.getElementById("topCategory").textContent =
 "لا توجد بيانات";
 
 }
-
+  
 
 // -------------------------------
 // الرسم البياني
@@ -663,6 +662,62 @@ document.getElementById("budgetText").textContent=
 
 }
 
+  // -------------------------------
+// التنبيهات الذكية
+// -------------------------------
+
+function updateAlerts(){
+
+const alertBox=document.getElementById("alertBox");
+
+const alertText=document.getElementById("alertText");
+
+if(monthlyBudget<=0){
+
+alertBox.style.display="none";
+
+return;
+
+}
+
+const totals=getTotals();
+
+const percent=(totals.expense/monthlyBudget)*100;
+
+alertBox.className="alert-box";
+
+if(percent>=100){
+
+alertBox.style.display="block";
+
+alertBox.classList.add("alert-danger");
+
+alertText.textContent="🚨 لقد تجاوزت الميزانية الشهرية!";
+
+}
+
+else if(percent>=80){
+
+alertBox.style.display="block";
+
+alertBox.classList.add("alert-warning");
+
+alertText.textContent="⚠️ لقد استهلكت أكثر من 80% من الميزانية.";
+
+}
+
+else{
+
+alertBox.style.display="block";
+
+alertBox.classList.add("alert-success");
+
+alertText.textContent="✅ إنفاقك ضمن الميزانية.";
+
+}
+
+}
+  
 // ===============================
 // الوضع الليلي
 // ===============================
