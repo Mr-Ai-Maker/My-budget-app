@@ -409,3 +409,41 @@ font-weight:bold;
 color:#2196F3;
 
 }
+
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+height:70px;
+background:#fff;
+display:flex;
+justify-content:space-around;
+align-items:center;
+box-shadow:0 -3px 15px rgba(0,0,0,.15);
+z-index:9999;
+}
+
+.bottom-nav button{
+flex:1;
+height:100%;
+border:none;
+background:none;
+font-size:14px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.bottom-nav button:hover{
+background:#f5f5f5;
+}
+
+.page{
+display:none;
+padding-bottom:90px;
+}
+
+.page.active{
+display:block;
+}
+
