@@ -282,11 +282,11 @@ updateSummary();
 
 updateBudget();
 
+updateAlerts();
+
 updateHistory();
 
 updateChart();
-
-saveData();
 
 }
 
