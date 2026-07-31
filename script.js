@@ -280,6 +280,8 @@ updateHome();
 
 updateSummary();
 
+updateMonthlyReport();
+
 updateBudget();
 
 updateAlerts();
@@ -287,7 +289,7 @@ updateAlerts();
 updateHistory();
 
 updateChart();
-
+  
 }
 
 // -------------------------------
@@ -331,6 +333,31 @@ totals.investment + " ريال";
 
 document.getElementById("remainSummary").textContent =
 totals.balance + " ريال";
+
+}
+
+// -------------------------------
+// التقرير الشهري
+// -------------------------------
+
+function updateMonthlyReport(){
+
+const totals = getTotals();
+
+document.getElementById("reportIncome").textContent =
+totals.income + " ريال";
+
+document.getElementById("reportExpense").textContent =
+totals.expense + " ريال";
+
+document.getElementById("reportInvestment").textContent =
+totals.investment + " ريال";
+
+document.getElementById("reportBalance").textContent =
+totals.balance + " ريال";
+
+document.getElementById("reportCount").textContent =
+transactions.length;
 
 }
 
