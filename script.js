@@ -1,406 +1,507 @@
 // ===============================
-// ميزانيتي - الجزء الأول
-// المتغيرات الرئيسية
+// ميزانيتي v2.0
+// Mr.AI
 // ===============================
 
-let income = Number(localStorage.getItem("income")) || 0;
-let expense = Number(localStorage.getItem("expense")) || 0;
-let invest = Number(localStorage.getItem("invest")) || 0;
 
-let history = JSON.parse(localStorage.getItem("history")) || [];
+// -------------------------------
+// البيانات
+// -------------------------------
 
-let editingIndex = -1;
+let transactions = [];
 
-let financeChart = null;
+let monthlyBudget = 0;
 
-let monthlyBudget = Number(localStorage.getItem("monthlyBudget")) || 0;
+let chart = null;
 
-// ===============================
-// تحديث الشاشة
-// ===============================
+let editingId = null;
 
-function updateScreen() {
 
-    document.getElementById("income").innerText = income + " ريال";
-    document.getElementById("expense").innerText = expense + " ريال";
-    document.getElementById("invest").innerText = invest + " ريال";
+// -------------------------------
+// التحميل
+// -------------------------------
 
-    document.getElementById("balance").innerText =
-        (income - expense - invest) + " ريال";
+loadData();
 
-    const list = document.getElementById("history");
 
-    list.innerHTML = "";
+// -------------------------------
+// حفظ البيانات
+// -------------------------------
 
-    const searchElement = document.getElementById("search");
-const filterElement = document.getElementById("filter");
+function saveData(){
 
-const search = searchElement ? searchElement.value.toLowerCase() : "";
-const filter = filterElement ? filterElement.value : "all";
-    
-history.forEach((item,index)=>{
+localStorage.setItem(
 
-if(
-filter!=="all" &&
-item.type!==filter
-){
-return;
+"transactions",
+
+JSON.stringify(transactions)
+
+);
+
+localStorage.setItem(
+
+"monthlyBudget",
+
+monthlyBudget
+
+);
+
 }
 
-const category = (item.category || "").toLowerCase();
-const note = (item.note || "").toLowerCase();
 
-if (
-    !category.includes(search) &&
-    !note.includes(search)
-) {
-    return;
+// -------------------------------
+// تحميل البيانات
+// -------------------------------
+
+function loadData(){
+
+transactions = JSON.parse(
+
+localStorage.getItem("transactions")
+
+) || [];
+
+monthlyBudget = Number(
+
+localStorage.getItem("monthlyBudget")
+
+) || 0;
+
+updateScreen();
+
 }
 
-        let emoji = "💵";
+// -------------------------------
+// حساب الإجماليات
+// -------------------------------
 
-        if (item.type === "expense") emoji = "🛒";
+function getTotals(){
 
-        if (item.type === "invest") emoji = "🌱";
+let income = 0;
 
-        const date = item.date || "بدون تاريخ";
+let expense = 0;
 
-        list.innerHTML += `
-<li style="
-background:#ffffff;
-padding:18px;
-margin-bottom:15px;
-border-radius:18px;
-box-shadow:0 3px 10px rgba(0,0,0,.12);
-list-style:none;
-">
+let investment = 0;
 
-<div style="font-size:22px;font-weight:bold;">
-${item.category}
-</div>
+transactions.forEach(item=>{
 
-<div style="margin-top:10px;font-size:20px;">
-${emoji} ${item.amount} ريال
-</div>
+if(item.type==="income"){
 
-<div style="margin-top:8px;color:#666;">
-${item.note}
-</div>
+income += Number(item.amount);
 
-<div style="margin-top:8px;color:#999;font-size:14px;">
-📅 ${date}
-</div>
+}
 
-<div style="margin-top:15px;">
+else if(item.type==="expense"){
 
-<button
-onclick="editTransaction(${index})"
-style="
-background:#2196F3;
-color:white;
-border:none;
-padding:10px 18px;
-border-radius:10px;
-font-size:16px;
-cursor:pointer;
-margin-left:8px;
-">
-✏️ تعديل
-</button>
+expense += Number(item.amount);
 
-<button
-onclick="deleteTransaction(${index})"
-style="
-background:#e53935;
-color:white;
-border:none;
-padding:10px 18px;
-border-radius:10px;
-font-size:16px;
-cursor:pointer;
-">
-🗑 حذف
-</button>
+}
 
-</div>
+else{
 
-</li>
-`;
+investment += Number(item.amount);
+
+}
 
 });
 
-drawChart();
+return{
 
-updateBudget();
+income,
 
-updateSummary();
+expense,
+
+investment,
+
+balance:
+
+income-expense-investment
+
+};
+
+}
+
+// -------------------------------
+// إضافة أو تعديل عملية
+// -------------------------------
+
+function addTransaction(){
+
+const description = document
+.getElementById("description")
+.value.trim();
+
+const amount = Number(
+document.getElementById("amount").value
+);
+
+const type =
+document.getElementById("type").value;
+
+if(description===""){
+
+alert("اكتب اسم العملية");
+
+return;
+
+}
+
+if(amount<=0){
+
+alert("أدخل مبلغًا صحيحًا");
+
+return;
+
+}
+
+if(editingId===null){
+
+transactions.push({
+
+id:Date.now(),
+
+description:description,
+
+amount:amount,
+
+type:type,
+
+date:new Date().toLocaleDateString("ar-SA")
+
+});
+
+}else{
+
+const index = transactions.findIndex(
+
+item=>item.id===editingId
+
+);
+
+transactions[index]={
+
+...transactions[index],
+
+description:description,
+
+amount:amount,
+
+type:type
+
+};
+
+editingId=null;
+
+document.getElementById("addBtn").innerText="➕ إضافة العملية";
+
+}
+
+saveData();
+
+updateScreen();
+
+clearForm();
+
+}
+
+// -------------------------------
+// تعديل عملية
+// -------------------------------
+
+function editTransaction(id){
+
+const item = transactions.find(
+
+t=>t.id===id
+
+);
+
+if(!item)return;
+
+document.getElementById("description").value=item.description;
+
+document.getElementById("amount").value=item.amount;
+
+document.getElementById("type").value=item.type;
+
+editingId=id;
+
+document.getElementById("addBtn").innerText="💾 حفظ التعديل";
+
+showPage("transactions");
+
+}
+
+// -------------------------------
+// حذف عملية
+// -------------------------------
+
+function deleteTransaction(id){
+
+if(!confirm("هل تريد حذف العملية؟")){
+
+return;
+
+}
+
+transactions=transactions.filter(
+
+item=>item.id!==id
+
+);
+
+saveData();
+
+updateScreen();
+
+}
+
+// -------------------------------
+// تنظيف الحقول
+// -------------------------------
+
+function clearForm(){
+
+document.getElementById("description").value="";
+
+document.getElementById("amount").value="";
+
+document.getElementById("type").value="income";
+
+}
+
+// -------------------------------
+// تحديث الشاشة بالكامل
+// -------------------------------
+
+function updateScreen(){
 
 updateHome();
 
-}
+updateSummary();
 
-// ===============================
-// حفظ عملية جديدة أو تعديل عملية
-// ===============================
+updateBudget();
 
-function saveTransaction() {
+updateHistory();
 
-    const type = document.getElementById("type").value;
+updateChart();
 
-    const category = document.getElementById("category").value;
-
-    const amount = Number(document.getElementById("amount").value);
-
-    const note = document.getElementById("note").value;
-
-    if (amount <= 0) {
-        alert("أدخل مبلغًا صحيحًا");
-        return;
-    }
-
-    const today = new Date().toLocaleDateString("ar-SA");
-
-    // عند التعديل نحذف القديمة أولاً
-    if (editingIndex !== -1) {
-
-        const old = history[editingIndex];
-
-        if (old.type === "income") {
-            income -= old.amount;
-        } else if (old.type === "expense") {
-            expense -= old.amount;
-        } else {
-            invest -= old.amount;
-        }
-
-        history.splice(editingIndex, 1);
-
-        editingIndex = -1;
-    }
-
-    // إضافة المبلغ الجديد
-    if (type === "income") {
-        income += amount;
-    } else if (type === "expense") {
-        expense += amount;
-    } else {
-        invest += amount;
-    }
-
-    // حفظ العملية
-    history.unshift({
-        type: type,
-        category: category,
-        amount: amount,
-        note: note,
-        date: today
-    });
-
-    // تخزين البيانات
-    localStorage.setItem("income", income);
-    localStorage.setItem("expense", expense);
-    localStorage.setItem("invest", invest);
-    localStorage.setItem("history", JSON.stringify(history));
-
-    // تنظيف الحقول
-    document.getElementById("amount").value = "";
-    document.getElementById("note").value = "";
-
-    updateScreen();
+saveData();
 
 }
 
-// ===============================
-// تعديل عملية
-// ===============================
-
-function editTransaction(index) {
-
-    editingIndex = index;
-
-    const item = history[index];
-
-    document.getElementById("type").value = item.type;
-
-    document.getElementById("category").value = item.category;
-
-    document.getElementById("amount").value = item.amount;
-
-    document.getElementById("note").value = item.note;
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
-}
-
-// ===============================
-// حذف عملية
-// ===============================
-
-function deleteTransaction(index) {
-
-    if (!confirm("هل تريد حذف هذه العملية؟")) {
-        return;
-    }
-
-    const item = history[index];
-
-    if (item.type === "income") {
-        income -= item.amount;
-    } else if (item.type === "expense") {
-        expense -= item.amount;
-    } else {
-        invest -= item.amount;
-    }
-
-    history.splice(index, 1);
-
-    localStorage.setItem("income", income);
-    localStorage.setItem("expense", expense);
-    localStorage.setItem("invest", invest);
-    localStorage.setItem("history", JSON.stringify(history));
-
-    updateScreen();
-
-}
-
-function drawChart() {
-
-    const ctx = document.getElementById("financeChart");
-
-    if (!ctx) return;
-
-    if (financeChart) {
-        financeChart.destroy();
-    }
-
-    financeChart = new Chart(ctx, {
-        type: "doughnut",
-        data: {
-            labels: [
-                "💰 الدخل",
-                "🛒 المصروفات",
-                "🌱 الاستثمارات"
-            ],
-            datasets: [{
-                data: [
-                    income,
-                    expense,
-                    invest
-                ]
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: "bottom"
-                }
-            }
-        }
-    });
-
-}
-
-function saveBudget() {
-
-    const value = Number(document.getElementById("budgetInput").value);
-
-    if (value <= 0) {
-        alert("أدخل ميزانية صحيحة");
-        return;
-    }
-
-    monthlyBudget = value;
-
-    localStorage.setItem("monthlyBudget", monthlyBudget);
-
-    updateBudget();
-
-}
-
-function updateBudget() {
-
-    const remaining = monthlyBudget - expense;
-
-    const percent = monthlyBudget > 0
-        ? Math.min((expense / monthlyBudget) * 100, 100)
-        : 0;
-
-    document.getElementById("budgetRemaining").innerText =
-        "المتبقي: " + remaining + " ريال";
-
-    const bar = document.getElementById("budgetBar");
-
-    bar.style.width = percent + "%";
-
-    const status = document.getElementById("budgetStatus");
-
-    if (percent < 80) {
-
-        bar.style.background = "#4CAF50";
-        status.innerText = "🟢 ضمن الميزانية";
-
-    } else if (percent < 100) {
-
-        bar.style.background = "#FF9800";
-        status.innerText = "🟠 اقتربت من الحد";
-
-    } else {
-
-        bar.style.background = "#F44336";
-        status.innerText = "🔴 تجاوزت الميزانية";
-
-    }
-
-}
-
-function updateSummary(){
-
-document.getElementById("incomeSummary").innerText=income;
-
-document.getElementById("expenseSummary").innerText=expense;
-
-document.getElementById("investSummary").innerText=invest;
-
-document.getElementById("remainSummary").innerText=income-expense-invest;
-
-}
+// -------------------------------
+// تحديث الصفحة الرئيسية
+// -------------------------------
 
 function updateHome(){
 
-document.getElementById("homeIncome").innerText=income+" ريال";
+const totals = getTotals();
 
-document.getElementById("homeExpense").innerText=expense+" ريال";
+document.getElementById("homeBalance").textContent =
+totals.balance + " ريال";
 
-document.getElementById("homeInvest").innerText=invest+" ريال";
+document.getElementById("homeIncome").textContent =
+totals.income + " ريال";
 
-document.getElementById("homeBalance").innerText=(income-expense-invest)+" ريال";
+document.getElementById("homeExpense").textContent =
+totals.expense + " ريال";
+
+document.getElementById("homeInvest").textContent =
+totals.investment + " ريال";
 
 }
 
-// ===============================
-// تشغيل التطبيق عند فتح الصفحة
-// ===============================
+// -------------------------------
+// تحديث الملخص المالي
+// -------------------------------
 
-window.onload = function () {
-    updateScreen();
+function updateSummary(){
 
-    document.getElementById("budgetInput").value = monthlyBudget;
-    
-    const search = document.getElementById("search");
-    const filter = document.getElementById("filter");
+const totals = getTotals();
 
-    if (search) {
-        search.addEventListener("input", updateScreen);
-    }
+document.getElementById("incomeSummary").textContent =
+totals.income + " ريال";
 
-    if (filter) {
-        filter.addEventListener("change", updateScreen);
-    }
-};
+document.getElementById("expenseSummary").textContent =
+totals.expense + " ريال";
+
+document.getElementById("investSummary").textContent =
+totals.investment + " ريال";
+
+document.getElementById("remainSummary").textContent =
+totals.balance + " ريال";
+
+}
+
+// -------------------------------
+// عرض العمليات
+// -------------------------------
+
+function updateHistory(){
+
+const list = document.getElementById("historyList");
+
+const recent = document.getElementById("recentTransactions");
+
+list.innerHTML = "";
+
+recent.innerHTML = "";
+
+if(transactions.length===0){
+
+list.innerHTML="<p class='empty'>لا توجد عمليات.</p>";
+
+recent.innerHTML="<p class='empty'>لا توجد عمليات.</p>";
+
+return;
+
+}
+
+transactions.slice().reverse().forEach(item=>{
+
+const div=document.createElement("div");
+
+div.className="transaction-item";
+
+div.innerHTML=`
+
+<div>
+
+<strong>${item.description}</strong><br>
+
+<small>${item.date}</small>
+
+</div>
+
+<div>
+
+${item.amount} ريال
+
+</div>
+
+<div>
+
+<button onclick="editTransaction(${item.id})">✏️</button>
+
+<button onclick="deleteTransaction(${item.id})">🗑️</button>
+
+</div>
+
+`;
+
+list.appendChild(div);
+
+});
+
+transactions.slice(-5).reverse().forEach(item=>{
+
+const div=document.createElement("div");
+
+div.className="recent-item";
+
+div.innerHTML=`
+
+<strong>${item.description}</strong>
+
+<span>${item.amount} ريال</span>
+
+`;
+
+recent.appendChild(div);
+
+});
+
+document.getElementById("transactionCount").textContent=
+transactions.length;
+
+}
+
+// -------------------------------
+// الرسم البياني
+// -------------------------------
+
+function updateChart(){
+
+const totals = getTotals();
+
+const ctx = document.getElementById("financeChart");
+
+if(!ctx) return;
+
+if(chart){
+
+chart.destroy();
+
+}
+
+chart = new Chart(ctx,{
+
+type:"doughnut",
+
+data:{
+
+labels:[
+
+"الدخل",
+
+"المصروفات",
+
+"الاستثمارات"
+
+],
+
+datasets:[{
+
+data:[
+
+totals.income,
+
+totals.expense,
+
+totals.investment
+
+],
+
+backgroundColor:[
+
+"#4CAF50",
+
+"#F44336",
+
+"#2196F3"
+
+],
+
+borderWidth:2
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{
+
+position:"bottom"
+
+}
+
+}
+
+}
+
+});
+
+}
+
+// -------------------------------
+// التنقل بين الصفحات
+// -------------------------------
 
 function showPage(pageId){
 
@@ -410,24 +511,214 @@ page.classList.remove("active");
 
 });
 
-document.getElementById(pageId).classList.add("active");
+const page=document.getElementById(pageId);
 
-document.querySelectorAll(".bottom-nav button").forEach(btn=>{
+if(page){
 
-btn.classList.remove("active");
-
-});
-
-event.target.classList.add("active");
+page.classList.add("active");
 
 }
 
-function showPage(page){
+}
 
-document.querySelectorAll(".page").forEach(p=>{
-p.classList.remove("active");
+// -------------------------------
+// البحث والفلترة
+// -------------------------------
+
+function filterTransactions(){
+
+const keyword=document.getElementById("searchInput").value.toLowerCase();
+
+const type=document.getElementById("filterType").value;
+
+const items=document.querySelectorAll("#historyList .transaction-item");
+
+items.forEach(item=>{
+
+const text=item.innerText.toLowerCase();
+
+const isType=
+
+type==="all"||
+
+text.includes(type==="income"?"دخل":
+
+type==="expense"?"مصروف":"استثمار");
+
+const isSearch=text.includes(keyword);
+
+item.style.display=
+
+isType&&isSearch?
+
+"flex":"none";
+
 });
 
-document.getElementById(page).classList.add("active");
+}
+
+// -------------------------------
+// حفظ الميزانية
+// -------------------------------
+
+function saveBudget(){
+
+const value=Number(
+
+document.getElementById("budgetInput").value
+
+);
+
+if(value<=0){
+
+alert("أدخل ميزانية صحيحة");
+
+return;
 
 }
+
+monthlyBudget=value;
+
+saveData();
+
+updateBudget();
+
+}
+
+// -------------------------------
+// تحديث الميزانية
+// -------------------------------
+
+function updateBudget(){
+
+const totals=getTotals();
+
+if(monthlyBudget<=0){
+
+return;
+
+}
+
+const percent=Math.min(
+
+(totals.expense/monthlyBudget)*100,
+
+100
+
+);
+
+document.getElementById("budgetBar").style.width=
+
+percent+"%";
+
+document.getElementById("budgetText").textContent=
+
+`استهلكت ${Math.round(percent)}% من الميزانية`;
+
+}
+
+// ===============================
+// الوضع الليلي
+// ===============================
+
+function toggleDarkMode(){
+
+document.body.classList.toggle("dark");
+
+localStorage.setItem(
+
+"darkMode",
+
+document.body.classList.contains("dark")
+
+);
+
+}
+
+
+// ===============================
+// النسخة الاحتياطية
+// ===============================
+
+function backupData(){
+
+const data={
+
+transactions,
+
+monthlyBudget
+
+};
+
+const text=JSON.stringify(data,null,2);
+
+const blob=new Blob([text],{
+
+type:"application/json"
+
+});
+
+const link=document.createElement("a");
+
+link.href=URL.createObjectURL(blob);
+
+link.download="ميزانيتي_backup.json";
+
+link.click();
+
+}
+
+
+// ===============================
+// استعادة النسخة الاحتياطية
+// ===============================
+
+function restoreData(){
+
+alert("سيتم إضافة رفع الملف في الإصدار القادم.");
+
+}
+
+
+// ===============================
+// تصدير PDF
+// ===============================
+
+function exportPDF(){
+
+alert("سيتم إضافة تصدير PDF قريباً.");
+
+}
+
+
+// ===============================
+// تصدير Excel
+// ===============================
+
+function exportExcel(){
+
+alert("سيتم إضافة تصدير Excel قريباً.");
+
+}
+
+
+// ===============================
+// تشغيل التطبيق
+// ===============================
+
+window.onload=function(){
+
+const dark=
+
+localStorage.getItem("darkMode");
+
+if(dark==="true"){
+
+document.body.classList.add("dark");
+
+}
+
+updateScreen();
+
+}
+
