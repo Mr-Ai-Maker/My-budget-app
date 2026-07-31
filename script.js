@@ -417,6 +417,52 @@ transactions.length;
 
 }
 
+  // أعلى فئة صرف
+
+const expenses = transactions.filter(
+item => item.type === "expense"
+);
+
+if(expenses.length > 0){
+
+let categories = {};
+
+expenses.forEach(item=>{
+
+const name = item.description;
+
+categories[name] =
+(categories[name] || 0) + item.amount;
+
+});
+
+let topCategory = "";
+
+let maxAmount = 0;
+
+for(let category in categories){
+
+if(categories[category] > maxAmount){
+
+maxAmount = categories[category];
+
+topCategory = category;
+
+}
+
+}
+
+document.getElementById("topCategory").textContent =
+`${topCategory} (${maxAmount} ريال)`;
+
+}else{
+
+document.getElementById("topCategory").textContent =
+"لا توجد بيانات";
+
+}
+
+
 // -------------------------------
 // الرسم البياني
 // -------------------------------
