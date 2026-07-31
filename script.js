@@ -387,3 +387,23 @@ window.onload = function () {
         filter.addEventListener("change", updateScreen);
     }
 };
+
+function showPage(pageId){
+
+document.querySelectorAll(".page").forEach(page=>{
+
+page.classList.remove("active");
+
+});
+
+document.getElementById(pageId).classList.add("active");
+
+document.querySelectorAll(".bottom-nav button").forEach(btn=>{
+
+btn.classList.remove("active");
+
+});
+
+event.target.classList.add("active");
+
+}
