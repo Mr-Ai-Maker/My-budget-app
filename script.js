@@ -67,6 +67,16 @@ localStorage.getItem("monthlyBudget")
 
 ) || 0;
 
+  transactions.forEach(item=>{
+
+if(!item.category){
+
+item.category="أخرى";
+
+}
+
+});
+  
 updateScreen();
 
 }
@@ -405,15 +415,27 @@ div.innerHTML=`
 
 <strong>${item.description}</strong><br>
 
-<small>${item.date}</small>
+<small>📂 ${item.category}</small><br>
+
+<small>📅 ${item.date}</small>
 
 </div>
 
 <div>
 
-${item.amount} ريال
+<strong>${item.amount} ريال</strong>
 
 </div>
+
+<div>
+
+<button onclick="editTransaction(${item.id})">✏️</button>
+
+<button onclick="deleteTransaction(${item.id})">🗑️</button>
+
+</div>
+
+`;
 
 <div>
 
@@ -453,34 +475,51 @@ transactions.length;
 
 // أعلى فئة صرف
 
-const expenses = transactions.filter(
-item => item.type === "expense"
-);
+const expenseCategories = {};
 
-if(expenses.length > 0){
+transactions.forEach(item=>{
 
-let categories = {};
+if(item.type==="expense"){
 
-expenses.forEach(item=>{
+const category=item.category || "أخرى";
 
-const name = item.description;
+expenseCategories[category]=
 
-categories[name] =
-(categories[name] || 0) + Number(item.amount);
+(expenseCategories[category]||0)+Number(item.amount);
+
+}
 
 });
 
-let topCategory = "";
+let topCategory="لا توجد بيانات";
 
-let maxAmount = 0;
+let maxAmount=0;
 
-for(const category in categories){
+for(const category in expenseCategories){
 
-if(categories[category] > maxAmount){
+if(expenseCategories[category]>maxAmount){
 
-maxAmount = categories[category];
+maxAmount=expenseCategories[category];
 
-topCategory = category;
+topCategory=category;
+
+}
+
+}
+
+const topCategoryElement=document.getElementById("topCategory");
+
+if(topCategoryElement){
+
+if(maxAmount>0){
+
+topCategoryElement.textContent=
+
+`${topCategory} (${maxAmount} ريال)`;
+
+}else{
+
+topCategoryElement.textContent="لا توجد بيانات";
 
 }
 
