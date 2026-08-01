@@ -138,6 +138,9 @@ document.getElementById("amount").value
 const type =
 document.getElementById("type").value;
 
+const category =
+document.getElementById("category").value;
+  
 if(description===""){
 
 alert("اكتب اسم العملية");
@@ -165,6 +168,8 @@ description:description,
 amount:amount,
 
 type:type,
+
+category:category,
 
 date:new Date().toLocaleDateString("ar-SA")
 
@@ -224,6 +229,7 @@ document.getElementById("amount").value=item.amount;
 
 document.getElementById("type").value=item.type;
 
+  document.getElementById("category").value=item.category;
 editingId=id;
 
 document.getElementById("addBtn").innerText="💾 حفظ التعديل";
@@ -268,6 +274,8 @@ document.getElementById("amount").value="";
 
 document.getElementById("type").value="income";
 
+document.getElementById("category").value="أخرى";
+  
 }
 
 // -------------------------------
