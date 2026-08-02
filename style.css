@@ -253,11 +253,11 @@ transition:.25s;
 
 .action-grid button:hover{
 
-transform:scale(1.03)
+transform:scale(1.03);
 
-   background:#2196f3
+background:#2196f3;
 
-   color:white;
+color:white;
 
 }
 
@@ -843,7 +843,17 @@ body.dark .transaction-item,
 
 body.dark .info-card,
 
-body.dark .settings-grid button{
+body.dark .settings-grid button,
+
+body.dark .goal-card,
+
+body.dark .report-card,
+
+body.dark .search-box,
+
+body.dark .add-transaction-box,
+
+body.dark .action-grid button{
 
 background:#1E1E1E;
 
@@ -1050,5 +1060,4 @@ cursor:pointer;
 
 margin-bottom:15px;
 
-   }
-   
+}
