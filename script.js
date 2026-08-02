@@ -201,7 +201,9 @@ description:description,
 
 amount:amount,
 
-type:type
+type:type,
+
+category:category
 
 };
 
@@ -439,16 +441,6 @@ div.innerHTML=`
 
 `;
 
-<div>
-
-<button onclick="editTransaction(${item.id})">✏️</button>
-
-<button onclick="deleteTransaction(${item.id})">🗑️</button>
-
-</div>
-
-`;
-
 list.appendChild(div);
 
 });
@@ -526,17 +518,6 @@ topCategoryElement.textContent="لا توجد بيانات";
 }
 
 }
-
-document.getElementById("topCategory").textContent =
-`${topCategory} (${maxAmount} ريال)`;
-
-}else{
-
-document.getElementById("topCategory").textContent =
-"لا توجد بيانات";
-
-}
-  
 
 // -------------------------------
 // الرسم البياني
@@ -771,8 +752,6 @@ JSON.stringify(goal)
 updateGoal();
 
 }
-
-الهدف المالي
 
 function updateGoal(){
 
