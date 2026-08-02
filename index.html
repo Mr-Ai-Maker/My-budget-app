@@ -299,12 +299,13 @@ class="progress-bar">
 </p>
 
 </div>
-  
+    
 </div>
 
-  صفحة التنبيهات 
-  <div class="report-card">
+  <!-- التقرير الشهري --> 
 
+<div class="report-card">
+  
 <h2>📅 التقرير الشهري</h2>
 
 <p>💰 الدخل: <span id="reportIncome">0 ريال</span></p>
@@ -318,7 +319,7 @@ class="progress-bar">
 <p>📝 عدد العمليات: <span id="reportCount">0</span></p>
 
   </div>
-  
+
 <!-- ========================= -->
 <!-- صفحة الإحصائيات -->
 <!-- ========================= -->
@@ -401,6 +402,14 @@ placeholder="💰 المبلغ">
 
 <select id="type">
 
+<option value="income">📈 دخل</option>
+
+<option value="expense">📉 مصروف</option>
+
+<option value="investment">🌱 استثمار</option>
+
+</select>
+
 <select id="category">
 
 <option value="طعام">🍔 طعام</option>
@@ -422,6 +431,7 @@ placeholder="💰 المبلغ">
 <option value="أخرى">✨ أخرى</option>
 
 </select>
+  
   
 <option value="income">
 
@@ -450,8 +460,6 @@ placeholder="💰 المبلغ">
 </button>
 
 </section>
-
-<hr>
 
 <section class="search-box">
 
