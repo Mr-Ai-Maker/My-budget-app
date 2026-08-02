@@ -960,7 +960,4 @@ document.body.classList.add("dark");
 
 }
 
-updateScreen();
-
-}
-
+// updateScreen();
