@@ -253,11 +253,11 @@ transition:.25s;
 
 .action-grid button:hover{
 
-transform:scale(1.03)
+transform:scale(1.03);
 
-   background:#2196f3
+background:#2196F3;
 
-   color:white;
+color:white;
 
 }
 
