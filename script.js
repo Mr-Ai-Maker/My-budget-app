@@ -302,6 +302,8 @@ updateMonthlyReport();
 
 updateBudget();
 
+updateGoal();
+
 updateAlerts();
 
 updateHistory();
@@ -733,6 +735,91 @@ percent+"%";
 document.getElementById("budgetText").textContent=
 
 `استهلكت ${Math.round(percent)}% من الميزانية`;
+
+}
+
+// ===============================
+// الأهداف المالية
+// ===============================
+
+let goal={
+
+name:"",
+
+amount:0
+
+};
+
+function saveGoal(){
+
+goal.name=document.getElementById("goalName").value;
+
+goal.amount=Number(
+
+document.getElementById("goalAmount").value
+
+);
+
+localStorage.setItem(
+
+"goal",
+
+JSON.stringify(goal)
+
+);
+
+updateGoal();
+
+}
+
+الهدف المالي
+
+function updateGoal(){
+
+goal=JSON.parse(
+
+localStorage.getItem("goal")
+
+)||{
+
+name:"",
+
+amount:0
+
+};
+
+if(goal.amount<=0){
+
+return;
+
+}
+
+const totals=getTotals();
+
+const saved=Math.max(
+
+totals.balance,
+
+0
+
+);
+
+const percent=Math.min(
+
+(saved/goal.amount)*100,
+
+100
+
+);
+
+document.getElementById("goalBar").style.width=
+
+percent+"%";
+
+document.getElementById("goalText").textContent=
+
+`${goal.name}
+(${saved} / ${goal.amount} ريال)`;
 
 }
 
