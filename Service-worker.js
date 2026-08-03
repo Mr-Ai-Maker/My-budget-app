@@ -1,0 +1,55 @@
+const CACHE_NAME = "mizaniyati-mrai-v1";
+
+const ASSETS_TO_CACHE = [
+  "./",
+  "./index.html",
+  "./style.css",
+  "./script.js",
+  "./manifest.json",
+  "./icons/icon-192.png",
+  "./icons/icon-512.png"
+];
+
+// عند التثبيت: تخزين الملفات الأساسية للعمل دون إنترنت
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS_TO_CACHE);
+    })
+  );
+  self.skipWaiting();
+});
+
+// عند التفعيل: حذف أي نسخ كاش قديمة
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys
+          .filter((key) => key !== CACHE_NAME)
+          .map((key) => caches.delete(key))
+      );
+    })
+  );
+  self.clients.claim();
+});
+
+// عند كل طلب: حاول الكاش أولاً، وإن لم يوجد اذهب للشبكة
+self.addEventListener("fetch", (event) => {
+  // لا نتدخل في طلبات المكتبات الخارجية (CDN) لضمان عملها بشكل طبيعي
+  if (event.request.url.startsWith(self.location.origin)) {
+    event.respondWith(
+      caches.match(event.request).then((cached) => {
+        return (
+          cached ||
+          fetch(event.request).then((response) => {
+            return caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, response.clone());
+              return response;
+            });
+          })
+        );
+      })
+    );
+  }
+});
